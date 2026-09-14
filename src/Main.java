@@ -1,31 +1,17 @@
 
 import quizgame.data.ConfigReader;
 import quizgame.data.PostgresDatabaseHandler;
-import quizgame.model.Player;
-import quizgame.model.Question;
-
-import java.util.List;
+import quizgame.controller.QuizSession;
+import quizgame.ui.ConsoleUI;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Connecting to database...");
-
         ConfigReader config = new ConfigReader("config.properties");
         PostgresDatabaseHandler db = new PostgresDatabaseHandler(config);
 
-        List<Question> questions = db.fetchAllQuestions();
-        System.out.println("Found " + questions.size() + " questions in the database:");
-        for (Question q : questions) {
-            System.out.println(" - " + q.toString());
-        }
+        QuizSession session = new QuizSession(db);
 
-        System.out.println("\nTrying to save player data");
-        Player testPlayer = new Player("Albin");
-        testPlayer.addPoint();
-        testPlayer.addPoint();
-
-        db.saveHighscore(testPlayer);
-
-        System.out.println("Database operations complete");
+        ConsoleUI ui = new ConsoleUI(session);
+        ui.start();
     }
 }
