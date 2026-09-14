@@ -1,13 +1,31 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-void main() {
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    IO.println(String.format("Hello and welcome!"));
 
-    for (int i = 1; i <= 5; i++) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        IO.println("i = " + i);
+import quizgame.data.ConfigReader;
+import quizgame.data.PostgresDatabaseHandler;
+import quizgame.model.Player;
+import quizgame.model.Question;
+
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Connecting to database...");
+
+        ConfigReader config = new ConfigReader("config.properties");
+        PostgresDatabaseHandler db = new PostgresDatabaseHandler(config);
+
+        List<Question> questions = db.fetchAllQuestions();
+        System.out.println("Found " + questions.size() + " questions in the database:");
+        for (Question q : questions) {
+            System.out.println(" - " + q.toString());
+        }
+
+        System.out.println("\nTrying to save player data");
+        Player testPlayer = new Player("Albin");
+        testPlayer.addPoint();
+        testPlayer.addPoint();
+
+        db.saveHighscore(testPlayer);
+
+        System.out.println("Database operations complete");
     }
 }

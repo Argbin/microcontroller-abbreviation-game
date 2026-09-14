@@ -1,3 +1,10 @@
+# Sensitive information
+config.properties
+
+# Cachefiles
+Thumbs.db
+.DS_Store
+
 # Compiled class file
 *.class
 
