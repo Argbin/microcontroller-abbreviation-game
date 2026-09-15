@@ -75,4 +75,29 @@ public class PostgresDatabaseHandler implements DatabaseRepository {
             System.err.println("Database error when saving score: " + e.getMessage());
         }
     }
+
+    @Override
+    public List<Player> getTopHighscores(int limit) {
+        List<Player> topPlayers = new ArrayList<>();
+        String query = "SELECT Players.name, Highscores.score FROM Highscores " +
+                "JOIN Players ON Highscores.player_id = Players.id " +
+                "ORDER BY Highscores.score DESC LIMIT ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setInt(1, limit);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    String name = rs.getString("name");
+                    int score = rs.getInt("score");
+                    topPlayers.add(new Player(name, score));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Could not get list: " + e.getMessage());
+        }
+        return topPlayers;
+    }
 }

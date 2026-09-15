@@ -40,6 +40,9 @@ public class QuizSession {
         db.saveHighscore(player);
     }
 
+    public List<Player> getTopScores() {
+        return db.getTopHighscores(5);
+    }
     public Player getPlayer() {
         return player;
     }

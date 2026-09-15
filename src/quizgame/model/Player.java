@@ -26,4 +26,9 @@ public class Player {
         this.playerName = playerName;
         this.score = 0;
     }
+
+    public Player(String name, int score) {
+        this.playerName = name;
+        this.score = score;
+    }
 }

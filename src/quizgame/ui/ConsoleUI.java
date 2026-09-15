@@ -1,8 +1,10 @@
 package quizgame.ui;
 
 import quizgame.controller.QuizSession;
+import quizgame.model.Player;
 import quizgame.model.Question;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUI {
@@ -24,6 +26,23 @@ public class ConsoleUI {
 
         session.startGame(name);
 
+        List<Player> topScores = session.getTopScores();
+        System.out.println("\nTOP 5 HIGHSCORE");
+        System.out.println("-------------------------");
+        if (topScores.isEmpty()) {
+            System.out.println("No points yet! Become the first!");
+        } else {
+            int rank = 1;
+            for (Player p : topScores) {
+                System.out.println(" " + rank + ". " + p.getPlayerName() + " - " + p.getScore() + " points");
+                rank++;
+            }
+        }
+        System.out.println("-------------------------");
+
+        System.out.print("\nPress enter to start the game!");
+        scanner.nextLine();
+
         System.out.println("\nThe game is starting. Type 'exit' anytime to quit.");
 
         Question currentQuestion = session.getNextQuestion();
@@ -40,7 +59,7 @@ public class ConsoleUI {
             boolean isCorrect = session.processAnswer(currentQuestion, answer);
 
             if (isCorrect) {
-                System.out.println("Correct!");
+                System.out.println("Correct! You got one point!");
             } else {
                 System.out.println("Wrong! The correct answer is: " + currentQuestion.getFullTerm());
             }
@@ -49,7 +68,7 @@ public class ConsoleUI {
         }
 
         session.endGame();
-        System.out.println("==================================");
+        System.out.println("\n==================================");
         System.out.println("The game is over!");
         System.out.println("You got " + session.getPlayer().getScore() + " points!.");
         System.out.println("==================================");

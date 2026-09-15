@@ -7,4 +7,5 @@ import java.util.List;
 public interface DatabaseRepository {
     List<Question> fetchAllQuestions();
     void saveHighscore(Player player);
+    List<Player> getTopHighscores(int limit);
 }
