@@ -61,7 +61,8 @@ public class ConsoleUI {
             if (isCorrect) {
                 System.out.println("Correct! You got one point!");
             } else {
-                System.out.println("Wrong! The correct answer is: " + currentQuestion.getFullTerm());
+                System.out.println("Wrong! The correct answer was: " + currentQuestion.getFullTerm());
+                break;
             }
 
             currentQuestion = session.getNextQuestion();
