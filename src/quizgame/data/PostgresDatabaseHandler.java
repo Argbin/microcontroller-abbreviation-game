@@ -41,9 +41,12 @@ public class PostgresDatabaseHandler implements DatabaseRepository {
 
     @Override
     public void saveHighscore(Player player) {
-        String upsertPlayer = "INSERT INTO players (name) VALUES (?) ON CONFLICT (name) DO NOTHING";
-        String getPlayerId = "SELECT id FROM players WHERE name = ?";
-        String insertScore = "INSERT INTO highscores (player_id, score) VALUES (?, ?)";
+        String upsertPlayer = "INSERT INTO Players (name) VALUES (?) ON CONFLICT (name) DO NOTHING";
+        String getPlayerId = "SELECT id FROM Players WHERE name = ?";
+
+        String insertScore = "INSERT INTO Highscores (player_id, score) VALUES (?, ?) " +
+                "ON CONFLICT (player_id) " +
+                "DO UPDATE SET score = GREATEST(highscores.score, EXCLUDED.score)";
 
         try (Connection conn = connect()) {
             try (PreparedStatement pstmt = conn.prepareStatement(upsertPlayer)) {
